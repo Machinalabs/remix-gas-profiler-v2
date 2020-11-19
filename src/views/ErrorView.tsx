@@ -21,7 +21,7 @@ export const ErrorView: React.FC = () => {
         Please raise an issue:{" "}
         <a
           style={{ color: "red" }}
-          href="https://github.com/machinalabs/remix-optimism-compiler/issues"
+          href="https://github.com/machinalabs/remix-gas-profiler-v2/issues"
         >
           Here
         </a>

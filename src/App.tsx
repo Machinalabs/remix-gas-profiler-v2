@@ -11,7 +11,7 @@ import "./App.css"
 
 const devMode = { port: 8080 }
 
-const PLUGIN_NAME = 'Remix Optimism Compiler '
+const PLUGIN_NAME = 'Remix Gas Profiler '
 
 const App = () => {
   const [clientInstance, setClientInstance] = useState(undefined as any)
