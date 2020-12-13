@@ -41,11 +41,13 @@ export const RemixProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => 
             const currentTheme = await client.call("theme", "currentTheme")
             log("Current theme", currentTheme)
 
-            setThemeType(currentTheme.brightness)
+            setThemeType(currentTheme.brightness || currentTheme.quality)
             client.on("theme", "themeChanged", (theme: any) => {
                 log("themeChanged")
                 setThemeType(theme.quality)
             })
+            // enable debugger
+            // await client.call("manager" as any, "activatePlugin", "debugger");
         }
 
         loadClient()

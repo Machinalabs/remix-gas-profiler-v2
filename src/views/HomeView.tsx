@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react"
-import { CompilationResult, RemixTxEvent } from "@remixproject/plugin-api"
+import { CompilationResult, RemixTxEvent, HighlightPosition } from "@remixproject/plugin-api"
 
 import { useRemix } from "../hooks"
 import { getGasPerLineCost, log } from "../utils"
 import { WelcomeView } from "./WelcomeView"
 
+interface GasPerLineCost {
+  lineNumber: number
+  gasCost: any
+}
+
 export const HomeView: React.FC = () => {
-  const { clientInstance } = useRemix()
+  const { clientInstance, themeType } = useRemix()
 
   const [latestTransaction, setLatestTransaction] = useState<RemixTxEvent | undefined>(undefined)
-  const [gasCosts, setGasCosts] = useState([])
   const [hasntBeenUsed, setHasntBeenUsed] = useState(true)
 
   useEffect(() => {
@@ -78,24 +82,70 @@ export const HomeView: React.FC = () => {
                 bytecode,
                 originalSourceCode,
                 traces,
-              ) // Array of object with form: { lineNumber, gasCost } 
+              ) as GasPerLineCost[]// Array of { lineNumber, gasCost } 
 
-              // TODO: set local variables 
-              // this.render(originalSourceCode, gasPerLineCost, transaction) 
-              setGasCosts(gasPerLineCost)
               setStatusToSuccess(hash)
 
-              // TODO: add annotations
+              let infoAboutMostExpensiveLine: GasPerLineCost = undefined as unknown as GasPerLineCost;
 
-              console.log("GasCosts", gasCosts)
+              await clientInstance.call('editor', 'clearAnnotations' as any);
+
+              const addAnnotations = async (gasPerLineCostResult: GasPerLineCost[]) => {
+                return new Promise((resolve, reject) => {
+                  try {
+                    gasPerLineCostResult.forEach(async (lineCost: GasPerLineCost) => {
+                      if (lineCost.gasCost > 0) {
+
+                        if (!infoAboutMostExpensiveLine) {
+                          infoAboutMostExpensiveLine = lineCost
+                        }
+
+                        if (lineCost.gasCost > infoAboutMostExpensiveLine.gasCost) {
+                          infoAboutMostExpensiveLine = lineCost
+                        }
+
+                        await clientInstance.call("editor", "addAnnotation" as any, {
+                          row: lineCost.lineNumber,
+                          column: 0,
+                          text: `${lineCost.gasCost}`,
+                          type: "info",
+                        })
+                      }
+                    });
+                    resolve()
+                  } catch (error) {
+                    reject(error)
+                  }
+                })
+              }
+
+              await addAnnotations(gasPerLineCost)
+
+              // highlight most expensive line
+              if (infoAboutMostExpensiveLine) {
+                const position: HighlightPosition = {
+                  start: {
+                    line: infoAboutMostExpensiveLine.lineNumber,
+                    column: 0
+                  },
+                  end: {
+                    line: infoAboutMostExpensiveLine.lineNumber,
+                    column: 100
+                  }
+                }
+                await clientInstance.call('editor', 'highlight', position, file, '0xfff')
+              }
+
             }
           }
         } catch (error) {
           log('Error in newTransaction event handler', error.message)
+          // setStatusToError()
+          // showErrorView
         }
       })
     }
-  }, [clientInstance, gasCosts])
+  }, [clientInstance])
 
   return (
     <div>

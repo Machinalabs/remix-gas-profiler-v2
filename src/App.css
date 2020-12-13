@@ -19,30 +19,8 @@ body {
   padding: 1em 1em;
 }
 
-.gas-costs span.empty {
-  content: "\200b";
-}
-
-.gas-costs {
-  text-align: right;
-  min-width: 20px;
-  color: rgba(0, 0, 0, 0.5);
-  background-color: #eaeaea;
-}
-
-.gas-costs span {
-  display: block;
-  padding: 0 5px;
-  font: 14px/1.2 Consolas, "Liberation Mono", Menlo, Courier, monospace !important;
-  width: 100%;
-}
-
 #gas-profiler-root .list-group-item {
   padding-left: 0.75rem;
-}
-
-#gas-profiler-root .code-content.list-group-item.d-flex {
-  padding: 0;
 }
 
 #gas-profiler-root .card-footer.custom.text-center {
@@ -59,3 +37,14 @@ body {
 #gas-profiler-root .custom.list-group-item.d-print-flex {
   padding-bottom: 0;
 }
+
+/* New Styles */
+
+#gas-profiler-root.dark {
+  color: white;
+}
+
+#gas-profiler-root.light {
+  color: black;
+}
+
