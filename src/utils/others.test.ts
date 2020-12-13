@@ -1,15 +1,14 @@
 import fs from "fs"
+import path from 'path'
 
-import { buildPcToInstructionMapping, parseRuntimeBinary, parseSourceMap } from "../src/utils"
+import { buildPcToInstructionMapping, parseRuntimeBinary, parseSourceMap } from "./others"
 
-const SOURCEMAP_FILE = "./test/mock-data/source-maps.json"; // TODO Change this
-// TODO: Fix path
+const SOURCEMAP_FILE = "./mock-data/source-maps.json";
 
 describe('Utils test', () => {
-
     describe('parseSourceMap', () => {
         it('should parse correctly the source maps', () => {
-            const sourceMapFile = fs.readFileSync(SOURCEMAP_FILE, 'utf8');
+            const sourceMapFile = fs.readFileSync(path.join(__dirname, SOURCEMAP_FILE), 'utf8');
             const sourceMap = JSON.parse(sourceMapFile).sourceMap;
 
             console.log("SourceMapFile", sourceMapFile)
@@ -52,5 +51,4 @@ describe('Utils test', () => {
             expect(true).toEqual(true)
         })
     })
-
 })

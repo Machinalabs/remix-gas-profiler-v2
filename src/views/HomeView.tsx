@@ -11,7 +11,7 @@ interface GasPerLineCost {
 }
 
 export const HomeView: React.FC = () => {
-  const { clientInstance, themeType } = useRemix()
+  const { clientInstance } = useRemix()
 
   const [latestTransaction, setLatestTransaction] = useState<RemixTxEvent | undefined>(undefined)
   const [hasntBeenUsed, setHasntBeenUsed] = useState(true)
