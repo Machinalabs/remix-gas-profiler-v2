@@ -5,7 +5,7 @@ interface Props {
 }
 
 export const DefaultLayout: React.FC<PropsWithChildren<Props>> = ({
-  children
+  children,
 }) => {
   return <div>{children}</div>
 }

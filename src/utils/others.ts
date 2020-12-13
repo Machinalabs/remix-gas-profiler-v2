@@ -1,8 +1,8 @@
-import { OpCode, StructLog } from 'ethereum-types'
+import { OpCode, StructLog } from "ethereum-types"
 
 export const buildLineOffsets = (src: string) => {
   let accu = 0
-  return src.split('\n').map(line => {
+  return src.split("\n").map((line) => {
     const ret = accu
     accu += line.length + 1
     return ret
@@ -43,10 +43,10 @@ export const buildPcToInstructionMapping = (codeHexStr: string) => {
   const mapping: IMapping = {}
   // const codeHexStr =  code0xHexStr.slice(2)
   let instructionIndex = 0
-  console.log('codeHexStr.length', codeHexStr.length)
-  console.log('codeHexStr', codeHexStr)
+  console.log("codeHexStr.length", codeHexStr.length)
+  console.log("codeHexStr", codeHexStr)
 
-  for (let pc = 0; pc < codeHexStr.length / 2;) {
+  for (let pc = 0; pc < codeHexStr.length / 2; ) {
     // console.log('PC Counter', pc)
     mapping[pc] = instructionIndex
 
@@ -73,7 +73,7 @@ export const buildPcToInstructionMapping = (codeHexStr: string) => {
 export const normalizeStructLogs = (structLogs: StructLog[]): StructLog[] => {
   if (structLogs[0].depth === 1) {
     // Geth uses 1-indexed depth counter whilst ganache starts from 0
-    const newStructLogs = structLogs.map(structLog => ({
+    const newStructLogs = structLogs.map((structLog) => ({
       ...structLog,
       depth: structLog.depth - 1,
     }))
@@ -84,9 +84,12 @@ export const normalizeStructLogs = (structLogs: StructLog[]): StructLog[] => {
 
 // TODO: test
 export const isCallLike = (op: OpCode): boolean => {
-  return [OpCode.CallCode, OpCode.StaticCall, OpCode.Call, OpCode.DelegateCall].includes(
-    op,
-  )
+  return [
+    OpCode.CallCode,
+    OpCode.StaticCall,
+    OpCode.Call,
+    OpCode.DelegateCall,
+  ].includes(op)
   // return _.includes(
   //   ,
   //   op
@@ -117,33 +120,33 @@ export const parseSourceMap = (sourceMap: string) => {
   let prevF: string
   let prevJ: string
 
-  console.log('SourceMapToParse', sourceMap)
+  console.log("SourceMapToParse", sourceMap)
 
   return sourceMap
     .trim()
-    .split(';')
-    .map(section => {
-      let [s, l, f, j] = section.split(':')
+    .split(";")
+    .map((section) => {
+      let [s, l, f, j] = section.split(":")
 
-      if (s === '' || s === undefined) {
+      if (s === "" || s === undefined) {
         s = prevS
       } else {
         prevS = s
       }
 
-      if (l === '' || l === undefined) {
+      if (l === "" || l === undefined) {
         l = prevL
       } else {
         prevL = l
       }
 
-      if (f === '' || f === undefined) {
+      if (f === "" || f === undefined) {
         f = prevF
       } else {
         prevF = f
       }
 
-      if (j === '' || j === undefined) {
+      if (j === "" || j === undefined) {
         j = prevJ
       } else {
         prevJ = j
