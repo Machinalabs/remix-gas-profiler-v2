@@ -5,7 +5,7 @@ export const WelcomeView = () => {
     const { themeType } = useRemix()
 
     return (
-        <div id='gas-profiler-root'>
+        <div id='gas-profiler-root' className={themeType}>
             <div className="card">
                 <div className="card-body">
                     <h6 className="card-title">Description</h6>
