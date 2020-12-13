@@ -23,7 +23,7 @@ export const getGasPerLineCost = (
 
       const lineGas: any[] = []
 
-      let synthCost = 0
+      let synthCost = 0 // eslint-disable-line
 
       const structLogs = trace.result
         ? trace.result.structLogs
@@ -31,7 +31,7 @@ export const getGasPerLineCost = (
       const normalisedStructLogs = normalizeStructLogs(structLogs)
       const bottomDepth = normalisedStructLogs[0].depth // should be 1
 
-      for (let i = 0; i < normalisedStructLogs.length; ) {
+      for (let i = 0; i < normalisedStructLogs.length;) {
         const { gas, gasCost, op, pc } = normalisedStructLogs[i]
 
         let cost
@@ -49,7 +49,7 @@ export const getGasPerLineCost = (
 
         const instructionIdx = pcToIdx[pc]
 
-        const { s, l, f, j } = sourceMapParsed[instructionIdx]
+        const { s, l, f, j } = sourceMapParsed[instructionIdx] // eslint-disable-line
         if (f === -1) {
           synthCost += parseInt(cost as any, 10) // TODO: fix type
           continue
