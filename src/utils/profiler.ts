@@ -31,8 +31,6 @@ export const getGasPerLineCost = (
       const normalisedStructLogs = normalizeStructLogs(structLogs)
       const bottomDepth = normalisedStructLogs[0].depth // should be 1
 
-      console.log("bottomDepth", bottomDepth)
-
       for (let i = 0; i < normalisedStructLogs.length; ) {
         const { gas, gasCost, op, pc } = normalisedStructLogs[i]
 
