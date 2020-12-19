@@ -8,6 +8,7 @@ import {
 import { useRemix } from "../hooks"
 import { getGasPerLineCost, log } from "../utils"
 import { WelcomeView } from "./WelcomeView"
+import { DebuggerPluginRequiredError } from "../errors"
 
 interface GasPerLineCost {
   lineNumber: number
@@ -21,6 +22,7 @@ export const HomeView: React.FC = () => {
     RemixTxEvent | undefined
   >(undefined)
   const [hasntBeenUsed, setHasntBeenUsed] = useState(true)
+  const [error, setError] = useState<undefined | DebuggerPluginRequiredError>()
 
   useEffect(() => {
     if (clientInstance) {
@@ -40,11 +42,20 @@ export const HomeView: React.FC = () => {
         })
       }
 
+      const setStatusToError = () => {
+        clientInstance.emit("statusChanged", {
+          key: 'failed',
+          type: 'error',
+          title: `Debugger plugin is not enabled`,
+        })
+      }
+
       clientInstance.on(
         "udapp",
         "newTransaction",
         async (transaction: RemixTxEvent) => {
           try {
+            setError(undefined)
             log("A new transaction was sent", transaction)
 
             setHasntBeenUsed(false)
@@ -129,14 +140,14 @@ export const HomeView: React.FC = () => {
                               {
                                 row: lineCost.lineNumber,
                                 column: 0,
-                                text: `${lineCost.gasCost}`,
-                                type: "info",
+                                text: `Gas cost: ${lineCost.gasCost} Wei`,
+                                type: "warning",
                               }
                             )
                           }
                         }
                       )
-                      resolve()
+                      resolve(true)
                     } catch (error) {
                       reject(error)
                     }
@@ -157,43 +168,48 @@ export const HomeView: React.FC = () => {
                       column: 100,
                     },
                   }
-                  await clientInstance.call(
+                  await (clientInstance as any).call(
                     "editor",
                     "highlight",
                     position,
-                    file,
-                    "0xfff"
+                    file
                   )
                 }
               }
             }
           } catch (error) {
             log("Error in newTransaction event handler", error.message)
-            // setStatusToError()
-            // showErrorView
+            setStatusToError()
+            setError(new DebuggerPluginRequiredError('Debugger plugin is required'))
           }
         }
       )
     }
   }, [clientInstance])
 
+  if (hasntBeenUsed) {
+    return (<WelcomeView />)
+  }
+
+  if (error instanceof DebuggerPluginRequiredError) {
+    return <div className="alert alert-danger" role="alert">
+      WARNING: Debugger plugin is required
+    </div>
+  }
+
   return (
     <div>
-      {hasntBeenUsed ? (
-        <WelcomeView />
-      ) : (
-        <ul className="list-group">
-          {latestTransaction && (
-            <TransactionHeader
-              hash={latestTransaction.hash}
-              transactionCost={latestTransaction.transactionCost}
-              executionCost={(latestTransaction as any).executionCost}
-              contractAddress={(latestTransaction as any).contractAddress}
-              to={(latestTransaction as any).to}
-            />
-          )}
-        </ul>
-      )}
+      <ul className="list-group">
+        {latestTransaction && (
+          <TransactionHeader
+            hash={latestTransaction.hash}
+            transactionCost={latestTransaction.transactionCost}
+            executionCost={(latestTransaction as any).executionCost}
+            contractAddress={(latestTransaction as any).contractAddress}
+            to={(latestTransaction as any).to}
+          />
+        )}
+      </ul>
     </div>
   )
 }

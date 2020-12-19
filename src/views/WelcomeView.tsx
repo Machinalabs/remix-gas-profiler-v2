@@ -52,11 +52,6 @@ export const WelcomeView = () => {
             edson_alcala@msn.com
           </a>
         </div>
-        <div className="card-footer custom text-center">
-          <div className="alert alert-danger" role="alert">
-            WARNING: Debugger plugin is required
-          </div>
-        </div>
       </div>
     </div>
   )
