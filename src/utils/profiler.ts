@@ -5,7 +5,7 @@ import {
   parseSourceMap,
 } from "./others"
 
-const binarysearch = require('binarysearch') // tslint:disable-line
+const binarysearch = require("binarysearch") // tslint:disable-line
 
 export const getGasPerLineCost = (
   sourceMap: string,

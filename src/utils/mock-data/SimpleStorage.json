@@ -46,21 +46,14 @@
   "ast": {
     "absolutePath": "/Users/edsonalcala/Projects/2020/remix-profiler/sample-truffle/contracts/SimpleStorage.sol",
     "exportedSymbols": {
-      "SimpleStorage": [
-        77
-      ]
+      "SimpleStorage": [77]
     },
     "id": 78,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 58,
-        "literals": [
-          "solidity",
-          "^",
-          "0.5",
-          ".8"
-        ],
+        "literals": ["solidity", "^", "0.5", ".8"],
         "nodeType": "PragmaDirective",
         "src": "0:23:1"
       },
@@ -71,9 +64,7 @@
         "documentation": null,
         "fullyImplemented": true,
         "id": 77,
-        "linearizedBaseContracts": [
-          77
-        ],
+        "linearizedBaseContracts": [77],
         "name": "SimpleStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
@@ -276,21 +267,14 @@
   "legacyAST": {
     "absolutePath": "/Users/edsonalcala/Projects/2020/remix-profiler/sample-truffle/contracts/SimpleStorage.sol",
     "exportedSymbols": {
-      "SimpleStorage": [
-        77
-      ]
+      "SimpleStorage": [77]
     },
     "id": 78,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 58,
-        "literals": [
-          "solidity",
-          "^",
-          "0.5",
-          ".8"
-        ],
+        "literals": ["solidity", "^", "0.5", ".8"],
         "nodeType": "PragmaDirective",
         "src": "0:23:1"
       },
@@ -301,9 +285,7 @@
         "documentation": null,
         "fullyImplemented": true,
         "id": 77,
-        "linearizedBaseContracts": [
-          77
-        ],
+        "linearizedBaseContracts": [77],
         "name": "SimpleStorage",
         "nodeType": "ContractDefinition",
         "nodes": [

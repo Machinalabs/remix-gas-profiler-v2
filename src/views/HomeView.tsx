@@ -44,8 +44,8 @@ export const HomeView: React.FC = () => {
 
       const setStatusToError = () => {
         clientInstance.emit("statusChanged", {
-          key: 'failed',
-          type: 'error',
+          key: "failed",
+          type: "error",
           title: `Debugger plugin is not enabled`,
         })
       }
@@ -180,7 +180,9 @@ export const HomeView: React.FC = () => {
           } catch (error) {
             log("Error in newTransaction event handler", error.message)
             setStatusToError()
-            setError(new DebuggerPluginRequiredError('Debugger plugin is required'))
+            setError(
+              new DebuggerPluginRequiredError("Debugger plugin is required")
+            )
           }
         }
       )
@@ -188,13 +190,15 @@ export const HomeView: React.FC = () => {
   }, [clientInstance])
 
   if (hasntBeenUsed) {
-    return (<WelcomeView />)
+    return <WelcomeView />
   }
 
   if (error instanceof DebuggerPluginRequiredError) {
-    return <div className="alert alert-danger" role="alert">
-      WARNING: Debugger plugin is required
-    </div>
+    return (
+      <div className="alert alert-danger" role="alert">
+        WARNING: Debugger plugin is required
+      </div>
+    )
   }
 
   return (
