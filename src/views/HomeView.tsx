@@ -205,7 +205,7 @@ export const HomeView: React.FC = () => {
                 }
             })
         }
-    }, [clientInstance])
+    }, [clientInstance, contractInfoMap, contractGasCostMap])
 
     useEffect(() => {
         const addAnnotationsIfApply = async () => {
@@ -273,7 +273,7 @@ export const HomeView: React.FC = () => {
         if (clientInstance && currentFileSelected) {
             addAnnotationsIfApply()
         }
-    }, [currentFileSelected, clientInstance, setContractGasCostMap, contractInfoMap])
+    }, [currentFileSelected, clientInstance, contractGasCostMap, contractInfoMap])
 
     if (hasntBeenUsed) {
         return <WelcomeView />
