@@ -1,11 +1,9 @@
 import React, { PropsWithChildren } from "react"
 
 interface Props {
-  from: string
+    from: string
 }
 
-export const DefaultLayout: React.FC<PropsWithChildren<Props>> = ({
-  children,
-}) => {
-  return <div>{children}</div>
+export const DefaultLayout: React.FC<PropsWithChildren<Props>> = ({ children }) => {
+    return <div>{children}</div>
 }

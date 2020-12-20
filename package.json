@@ -8,7 +8,6 @@
     "@remixproject/plugin-api": "^0.3.3",
     "@remixproject/plugin-iframe": "^0.3.3",
     "@remixproject/plugin-utils": "^0.3.3",
-    "binarysearch": "^1.0.1",
     "ethereum-types": "^3.4.0",
     "react": "^16.13.1",
     "react-bootstrap": "^1.3.0",

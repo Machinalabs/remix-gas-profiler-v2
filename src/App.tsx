@@ -6,11 +6,11 @@ import { RemixProvider } from "./hooks"
 import "./App.css"
 
 const App = () => {
-  return (
-    <RemixProvider>
-      <Routes />
-    </RemixProvider>
-  )
+    return (
+        <RemixProvider>
+            <Routes />
+        </RemixProvider>
+    )
 }
 
 export default App
