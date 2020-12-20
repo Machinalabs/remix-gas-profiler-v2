@@ -273,7 +273,7 @@ export const HomeView: React.FC = () => {
         if (clientInstance && currentFileSelected) {
             addAnnotationsIfApply()
         }
-    }, [currentFileSelected, clientInstance])
+    }, [currentFileSelected, clientInstance, setContractGasCostMap, contractInfoMap])
 
     if (hasntBeenUsed) {
         return <WelcomeView />
