@@ -109,7 +109,7 @@ export const HomeView: React.FC = () => {
 
                 const traces = await clientInstance
                     .call("debugger" as any, "getTrace", hash)
-                    .catch((error) => {
+                    .catch(() => {
                         setError(new DebuggerPluginRequiredError("Debugger plugin is required"))
                     })
 
@@ -122,6 +122,7 @@ export const HomeView: React.FC = () => {
                         for (const contract of Object.keys(contracts[file])) {
                             const currentContractEVMData = contracts[file][contract].evm
                             log("currentContractEVMData", currentContractEVMData)
+
                             if (isContractCreation) {
                                 if (
                                     `0x${currentContractEVMData.bytecode.object}` ===
@@ -130,8 +131,6 @@ export const HomeView: React.FC = () => {
                                     const originalSourceCode = (compilationResult as any).source.sources[
                                         file
                                     ].content.trim()
-
-                                    const currentContractEVMData = contracts[file][contract].evm
 
                                     const sourceMap = currentContractEVMData.bytecode.sourceMap
 

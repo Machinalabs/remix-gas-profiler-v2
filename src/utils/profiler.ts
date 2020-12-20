@@ -64,7 +64,7 @@ export const getGasPerLineCost = (
                     const { s, l, f, j } = sourceMapParsed[instructionIdx] // eslint-disable-line
                     // Note: start, length, file, jump
 
-                    const currentFileIndex = parseInt(`${f}, 10`)
+                    const currentFileIndex = parseInt(`${f}`, 10)
 
                     if (f === -1) {
                         continue
@@ -86,7 +86,7 @@ export const getGasPerLineCost = (
                 }
             }
 
-            let gasPerLineCost: GasCostPerLine[] = []
+            const gasPerLineCost: GasCostPerLine[] = []
             sourceCode.split("\n").forEach((line, lineRow) => {
                 if (lineGas[lineRow] && lineGas[lineRow].cost > 0) {
                     const gas = lineGas[lineRow].cost || 0

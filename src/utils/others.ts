@@ -156,18 +156,11 @@ export const parseSourceMap = (sourceMap: string) => {
     let prevF: string
     let prevJ: string
 
-    // console.log("SourceMapToParse", sourceMap)
-
     return sourceMap
         .trim()
         .split(";")
         .map((section) => {
-            let [s, l, f, j, m] = section.split(":")
-            // console.log("S", s)
-            // console.log("L", l)
-            // console.log("F", f)
-            // console.log("J", j)
-            // console.log("M", m)
+            let [s, l, f, j] = section.split(":")
 
             if (s === "" || s === undefined) {
                 s = prevS
@@ -194,7 +187,6 @@ export const parseSourceMap = (sourceMap: string) => {
             }
 
             return { s: Number(s), l: Number(l), f: Number(f), j }
-
             // s: start, length, file, jump
         })
 }
