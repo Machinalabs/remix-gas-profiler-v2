@@ -10,13 +10,13 @@ interface LineOffset {
 export const getLineOffsets = (src: string) => {
     const lines = src.split("\n")
     const lineOffsets: LineOffset = {}
-    let initialLine = 0;
+    let initialLine = 0
 
     lines.forEach((line, index) => {
         const lineSize = new Blob([line]).size
         lineOffsets[index + 1] = {
             from: initialLine,
-            to: lineSize + initialLine
+            to: lineSize + initialLine,
         }
         initialLine += lineSize + 1
     })
@@ -65,10 +65,10 @@ export const parseRuntimeBinary = (binary: string) => {
 
 export const buildPcToInstructionMapping = (codeHexStrParam: string) => {
     const mapping: IMapping = {}
-    const codeHexStr = codeHexStrParam.startsWith('0x') ? codeHexStrParam.slice(2) : codeHexStrParam;
+    const codeHexStr = codeHexStrParam.startsWith("0x") ? codeHexStrParam.slice(2) : codeHexStrParam
     let instructionIndex = 0
 
-    for (let pc = 0; pc < codeHexStr.length / 2;) {
+    for (let pc = 0; pc < codeHexStr.length / 2; ) {
         // console.log('PC Counter', pc)
         mapping[pc] = instructionIndex
 
@@ -86,7 +86,6 @@ export const buildPcToInstructionMapping = (codeHexStrParam: string) => {
     }
     return mapping
 }
-
 
 // TODO: test
 export const normalizeStructLogs = (structLogs: StructLog[]): StructLog[] => {
@@ -196,6 +195,6 @@ export const parseSourceMap = (sourceMap: string) => {
 
             return { s: Number(s), l: Number(l), f: Number(f), j }
 
-            // s: start, length, file, jump 
+            // s: start, length, file, jump
         })
 }

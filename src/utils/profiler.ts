@@ -37,7 +37,7 @@ export const getGasPerLineCost = (
             const structLogs = trace.result ? trace.result.structLogs : trace.structLogs
             const normalisedStructLogs = normalizeStructLogs(structLogs)
             const bottomDepth = normalisedStructLogs[0].depth // should be 1
-            for (let i = 0; i < normalisedStructLogs.length;) {
+            for (let i = 0; i < normalisedStructLogs.length; ) {
                 const { gas, gasCost: gasCostToBeParsed, op, pc } = normalisedStructLogs[i]
 
                 const gasCost = parseInt(`${gasCostToBeParsed}`, 10)
@@ -49,8 +49,7 @@ export const getGasPerLineCost = (
                     const gasBeforeCall = gas
                     do {
                         i += 1
-                    }
-                    while (normalisedStructLogs[i].depth > bottomDepth)
+                    } while (normalisedStructLogs[i].depth > bottomDepth)
                     cost = gasBeforeCall - normalisedStructLogs[i].gas
                 } else if (["SSTORE"].includes(op)) {
                     i += 1
@@ -76,17 +75,16 @@ export const getGasPerLineCost = (
                     if (lineGas[line] === undefined) {
                         lineGas[line] = {
                             cost,
-                            fileIndex: currentFileIndex
+                            fileIndex: currentFileIndex,
                         }
                     } else {
                         lineGas[line] = {
                             cost: lineGas[line].cost + cost,
-                            fileIndex: currentFileIndex
+                            fileIndex: currentFileIndex,
                         }
                     }
                 }
             }
-
 
             let gasPerLineCost: GasCostPerLine[] = []
             sourceCode.split("\n").forEach((line, lineRow) => {
@@ -96,7 +94,7 @@ export const getGasPerLineCost = (
                         line: lineRow,
                         gasCost: gas,
                         fileIndex: lineGas[lineRow].fileIndex,
-                        fileName: allFiles[lineGas[lineRow].fileIndex]
+                        fileName: allFiles[lineGas[lineRow].fileIndex],
                     })
                 }
             })
@@ -108,4 +106,3 @@ export const getGasPerLineCost = (
         }
     })
 }
-

@@ -1,7 +1,13 @@
 import fs from "fs"
 import path from "path"
 
-import { buildPcToInstructionMapping, findLineFromOffsets, getLineOffsets, parseRuntimeBinary, parseSourceMap } from "./others"
+import {
+    buildPcToInstructionMapping,
+    findLineFromOffsets,
+    getLineOffsets,
+    parseRuntimeBinary,
+    parseSourceMap,
+} from "./others"
 
 const SOURCEMAP_FILE = "./mock-data/source-maps.json"
 
@@ -54,8 +60,8 @@ describe("Utils test", () => {
         })
     })
 
-    describe('getLineOffsets', () => {
-        it('gets line offsets correctly', () => {
+    describe("getLineOffsets", () => {
+        it("gets line offsets correctly", () => {
             const source = `SPDX-License-Identifier: GPL-3.0
 
             pragma solidity >=0.7.0 <0.8.0;
@@ -90,9 +96,6 @@ describe("Utils test", () => {
             const firstLine = findLineFromOffsets(lineOffsets, 10)
             console.log("firstLine", firstLine)
             expect(firstLine).toEqual(1)
-
         })
-
-
     })
 })

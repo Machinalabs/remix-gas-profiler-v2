@@ -12,14 +12,14 @@ const TRACE_SAMPLE_FILE = "./mock-data/sample-trace.json"
 const TRACE_SAMPLE_GANACHE_FILE = "./mock-data/sample-ganache-trace.json"
 const TRACE_SAMPLE_GETH_FILE = "./mock-data/sample-geth-trace.json"
 const TRACE_SAMPLE_REMIX_FILE = "./mock-data/sample-remix-trace.json"
-const TRACE_MULTIPLE_FILES_REMIX = './mock-data/trace-multiple-files.json'
+const TRACE_MULTIPLE_FILES_REMIX = "./mock-data/trace-multiple-files.json"
 
 interface SourceMapFile {
     sourceMap: string
 }
 
 describe("Profiler tests", () => {
-    const sampleFileName = "browser/ContractA.sol";
+    const sampleFileName = "browser/ContractA.sol"
     let sourceMapFile: SourceMapFile
     let sourceMap: string
     let originalSourceCode: string
@@ -40,7 +40,6 @@ describe("Profiler tests", () => {
             "608060405234801561001057600080fd5b506103e860008190555060d3806100286000396000f3fe6080604052600436106043576000357c0100000000000000000000000000000000000000000000000000000000900480631865c57d146048578063c19d93fb146070575b600080fd5b348015605357600080fd5b50605a6098565b6040518082815260200191505060405180910390f35b348015607b57600080fd5b50608260a1565b6040518082815260200191505060405180910390f35b60008054905090565b6000548156fea165627a7a72305820b118682270af01d6061a2c91ba2b4b9fcff5384e590e61feef96b98adbdf96410029" // await web3.eth.getCode(contractAddress);
 
         const result = await getGasPerLineCost(
-
             [sampleFileName],
             sourceMap,
             bytecode,
@@ -62,7 +61,6 @@ describe("Profiler tests", () => {
             "608060405234801561001057600080fd5b506103e860008190555060d3806100286000396000f3fe6080604052600436106043576000357c0100000000000000000000000000000000000000000000000000000000900480631865c57d146048578063c19d93fb146070575b600080fd5b348015605357600080fd5b50605a6098565b6040518082815260200191505060405180910390f35b348015607b57600080fd5b50608260a1565b6040518082815260200191505060405180910390f35b60008054905090565b6000548156fea165627a7a72305820b118682270af01d6061a2c91ba2b4b9fcff5384e590e61feef96b98adbdf96410029" // await web3.eth.getCode(contractAddress);
 
         const result = await getGasPerLineCost(
-
             [sampleFileName],
             sourceMap,
             bytecode,
@@ -84,7 +82,6 @@ describe("Profiler tests", () => {
             "608060405234801561001057600080fd5b506103e860008190555060d3806100286000396000f3fe6080604052600436106043576000357c0100000000000000000000000000000000000000000000000000000000900480631865c57d146048578063c19d93fb146070575b600080fd5b348015605357600080fd5b50605a6098565b6040518082815260200191505060405180910390f35b348015607b57600080fd5b50608260a1565b6040518082815260200191505060405180910390f35b60008054905090565b6000548156fea165627a7a72305820b118682270af01d6061a2c91ba2b4b9fcff5384e590e61feef96b98adbdf96410029" // await web3.eth.getCode(contractAddress);
 
         const result = await getGasPerLineCost(
-
             [sampleFileName],
             sourceMap,
             bytecode,
@@ -119,7 +116,6 @@ describe("Profiler tests", () => {
 
         expect(true).toEqual(true)
     })
-
 
     it.only("generate the gas profiler report using REMIX traces with multiple files", async () => {
         const traceJSONSample = JSON.parse(
