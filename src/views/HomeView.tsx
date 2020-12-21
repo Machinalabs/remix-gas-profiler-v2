@@ -60,7 +60,6 @@ export const HomeView: React.FC = () => {
             }
 
             const updateContractAddressesMap = (k: string, v: ContractInfo) => {
-                console.log("address being stored", k)
                 setContractInfoMap(new Map(contractInfoMap.set(k, v)))
             }
 
@@ -82,14 +81,12 @@ export const HomeView: React.FC = () => {
                     language: string,
                     data: CompilationResult
                 ) => {
-                    console.log("New file selected", filename)
                     setCurrentFileSelected(undefined as any)
                     setCurrentFileSelected(filename)
                 }
             )
 
             clientInstance.on("fileManager", "currentFileChanged", (file) => {
-                console.log("New file selected", file)
                 setCurrentFileSelected(file)
             })
 
@@ -205,7 +202,7 @@ export const HomeView: React.FC = () => {
                 }
             })
         }
-    }, [clientInstance, contractInfoMap, contractGasCostMap])
+    }, [clientInstance]) // eslint-disable-line
 
     useEffect(() => {
         const addAnnotationsIfApply = async () => {
@@ -268,7 +265,7 @@ export const HomeView: React.FC = () => {
             }
         }
 
-        console.log("currentFileSelected", currentFileSelected)
+        log("currentFileSelected", currentFileSelected)
 
         if (clientInstance && currentFileSelected) {
             addAnnotationsIfApply()
