@@ -34,7 +34,7 @@ export const RemixProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => 
         log(`${PLUGIN_NAME} loading...`)
         const loadClient = async () => {
             const client = new RemixClient()
-            console.log("Client", client)
+            log("Client", client)
             await client.onload()
             log(`${PLUGIN_NAME} Plugin has been loaded`)
 

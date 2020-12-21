@@ -68,8 +68,7 @@ export const buildPcToInstructionMapping = (codeHexStrParam: string) => {
     const codeHexStr = codeHexStrParam.startsWith("0x") ? codeHexStrParam.slice(2) : codeHexStrParam
     let instructionIndex = 0
 
-    for (let pc = 0; pc < codeHexStr.length / 2; ) {
-        // console.log('PC Counter', pc)
+    for (let pc = 0; pc < codeHexStr.length / 2;) {
         mapping[pc] = instructionIndex
 
         const byteHex = codeHexStr[pc * 2] + codeHexStr[pc * 2 + 1]
