@@ -37,7 +37,7 @@ export const getGasPerLineCost = (
             const structLogs = trace.result ? trace.result.structLogs : trace.structLogs
             const normalisedStructLogs = normalizeStructLogs(structLogs)
             const bottomDepth = normalisedStructLogs[0].depth // should be 1
-            for (let i = 0; i < normalisedStructLogs.length;) {
+            for (let i = 0; i < normalisedStructLogs.length; ) {
                 const { gas, gasCost: gasCostToBeParsed, op, pc } = normalisedStructLogs[i]
 
                 const gasCost = parseInt(`${gasCostToBeParsed}`, 10)
