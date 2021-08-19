@@ -88,118 +88,125 @@ export const HomeView: React.FC = () => {
 
             clientInstance.on("fileManager", "currentFileChanged", (file) => {
                 setCurrentFileSelected(file)
-            });
+            })
 
-            (clientInstance as any).on("udapp", "newTransaction", async (transaction: RemixTxEvent, receipt: any) => {
-                setError(undefined)
-                log("A new transaction was sent", transaction)
-                resetContractGasCostMap()
-                setCurrentFileSelected(undefined as any)
-                setHasntBeenUsed(false)
-                setLatestTransaction(transaction)
-                const { hash } = transaction
-                log("Transaction hash", hash)
+            ;(clientInstance as any).on(
+                "udapp",
+                "newTransaction",
+                async (transaction: RemixTxEvent, receipt: any) => {
+                    setError(undefined)
+                    log("A new transaction was sent", transaction)
+                    resetContractGasCostMap()
+                    setCurrentFileSelected(undefined as any)
+                    setHasntBeenUsed(false)
+                    setLatestTransaction(transaction)
+                    const { hash } = transaction
+                    log("Transaction hash", hash)
 
-                const isContractCreation = (receipt as any).contractAddress ? true : false
+                    const isContractCreation = (receipt as any).contractAddress ? true : false
 
-                setStatusToLoading(hash)
+                    setStatusToLoading(hash)
 
-                const traces = await clientInstance
-                    .call("debugger" as any, "getTrace", hash)
-                    .catch(() => {
-                        setError(new DebuggerPluginRequiredError("Debugger plugin is required"))
-                    })
+                    const traces = await clientInstance
+                        .call("debugger" as any, "getTrace", hash)
+                        .catch(() => {
+                            setError(new DebuggerPluginRequiredError("Debugger plugin is required"))
+                        })
 
-                try {
-                    const compilationResult: any = await clientInstance.solidity.getCompilationResult()
-                    const contracts = (compilationResult as any).data.contracts
-                    const allFiles = Object.keys(contracts)
+                    try {
+                        const compilationResult: any = await clientInstance.solidity.getCompilationResult()
+                        const contracts = (compilationResult as any).data.contracts
+                        const allFiles = Object.keys(contracts)
 
-                    for (const file of Object.keys(contracts)) {
-                        for (const contract of Object.keys(contracts[file])) {
-                            const currentContractEVMData = contracts[file][contract].evm
-                            log("currentContractEVMData", currentContractEVMData)
+                        for (const file of Object.keys(contracts)) {
+                            for (const contract of Object.keys(contracts[file])) {
+                                const currentContractEVMData = contracts[file][contract].evm
+                                log("currentContractEVMData", currentContractEVMData)
 
-                            if (isContractCreation) {
-                                if (
-                                    `0x${currentContractEVMData.bytecode.object}` ===
-                                    transaction.input
-                                ) {
-                                    const originalSourceCode = (compilationResult as any).source.sources[
-                                        file
-                                    ].content.trim()
+                                if (isContractCreation) {
+                                    if (
+                                        `0x${currentContractEVMData.bytecode.object}` ===
+                                        transaction.input
+                                    ) {
+                                        const originalSourceCode = (compilationResult as any).source.sources[
+                                            file
+                                        ].content.trim()
 
-                                    const sourceMap = currentContractEVMData.bytecode.sourceMap
+                                        const sourceMap = currentContractEVMData.bytecode.sourceMap
 
-                                    const bytecode = transaction.input
+                                        const bytecode = transaction.input
 
-                                    const creationGasProfiling: GasCostPerLine[] = await getGasPerLineCost(
-                                        allFiles,
-                                        sourceMap,
-                                        bytecode,
-                                        originalSourceCode,
-                                        traces
-                                    )
-
-                                    log("gasPerLineCost on creation", creationGasProfiling)
-
-                                    updateContractAddressesMap((receipt as any).contractAddress,
-                                        {
-                                            bytecode: currentContractEVMData.bytecode.object,
-                                            sourceMap: currentContractEVMData.bytecode.sourceMap,
-                                            deployedBytecode:
-                                                currentContractEVMData.deployedBytecode.object,
-                                            deployedSourceMap:
-                                                currentContractEVMData.deployedBytecode.sourceMap,
-                                            sourceCode: originalSourceCode,
-                                            creationGasProfiling,
-                                        }
-                                    )
-
-                                    allFiles.forEach((itemFile) => {
-                                        const itemsFromItemFile = creationGasProfiling.filter(
-                                            (s) => s.fileName === itemFile
+                                        const creationGasProfiling: GasCostPerLine[] = await getGasPerLineCost(
+                                            allFiles,
+                                            sourceMap,
+                                            bytecode,
+                                            originalSourceCode,
+                                            traces
                                         )
-                                        updateContractGasCostMap(itemFile, itemsFromItemFile)
-                                    })
 
-                                    setStatusToSuccess(hash)
-                                    setCurrentFileSelected(file)
-                                }
-                            } else {
-                                const toAddress = (transaction as any).to
-                                const contractUsed = contractInfoMap.get(toAddress)
+                                        log("gasPerLineCost on creation", creationGasProfiling)
 
-                                if (contractUsed) {
-                                    const creationGasProfiling: GasCostPerLine[] = await getGasPerLineCost(
-                                        allFiles,
-                                        contractUsed.deployedSourceMap,
-                                        contractUsed.deployedBytecode,
-                                        contractUsed.sourceCode,
-                                        traces
-                                    )
-
-                                    log("gasPerLineCost on transaction", creationGasProfiling)
-
-                                    allFiles.forEach((itemFile) => {
-                                        const itemsFromItemFile = creationGasProfiling.filter(
-                                            (s) => s.fileName === itemFile
+                                        updateContractAddressesMap(
+                                            (receipt as any).contractAddress,
+                                            {
+                                                bytecode: currentContractEVMData.bytecode.object,
+                                                sourceMap:
+                                                    currentContractEVMData.bytecode.sourceMap,
+                                                deployedBytecode:
+                                                    currentContractEVMData.deployedBytecode.object,
+                                                deployedSourceMap:
+                                                    currentContractEVMData.deployedBytecode
+                                                        .sourceMap,
+                                                sourceCode: originalSourceCode,
+                                                creationGasProfiling,
+                                            }
                                         )
-                                        updateContractGasCostMap(itemFile, itemsFromItemFile)
-                                    })
 
-                                    setStatusToSuccess(hash)
-                                    setCurrentFileSelected(file)
+                                        allFiles.forEach((itemFile) => {
+                                            const itemsFromItemFile = creationGasProfiling.filter(
+                                                (s) => s.fileName === itemFile
+                                            )
+                                            updateContractGasCostMap(itemFile, itemsFromItemFile)
+                                        })
+
+                                        setStatusToSuccess(hash)
+                                        setCurrentFileSelected(file)
+                                    }
+                                } else {
+                                    const toAddress = (transaction as any).to
+                                    const contractUsed = contractInfoMap.get(toAddress)
+
+                                    if (contractUsed) {
+                                        const creationGasProfiling: GasCostPerLine[] = await getGasPerLineCost(
+                                            allFiles,
+                                            contractUsed.deployedSourceMap,
+                                            contractUsed.deployedBytecode,
+                                            contractUsed.sourceCode,
+                                            traces
+                                        )
+
+                                        log("gasPerLineCost on transaction", creationGasProfiling)
+
+                                        allFiles.forEach((itemFile) => {
+                                            const itemsFromItemFile = creationGasProfiling.filter(
+                                                (s) => s.fileName === itemFile
+                                            )
+                                            updateContractGasCostMap(itemFile, itemsFromItemFile)
+                                        })
+
+                                        setStatusToSuccess(hash)
+                                        setCurrentFileSelected(file)
+                                    }
                                 }
                             }
                         }
+                    } catch (error) {
+                        log("Error in newTransaction event handler", error.message)
+                        setStatusToError()
+                        setError(error)
                     }
-                } catch (error) {
-                    log("Error in newTransaction event handler", error.message)
-                    setStatusToError()
-                    setError(error)
                 }
-            })
+            )
         }
     }, [clientInstance]) // eslint-disable-line
 
