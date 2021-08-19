@@ -88,9 +88,9 @@ export const HomeView: React.FC = () => {
 
             clientInstance.on("fileManager", "currentFileChanged", (file) => {
                 setCurrentFileSelected(file)
-            })
+            });
 
-            clientInstance.on("udapp", "newTransaction", async (transaction: RemixTxEvent) => {
+            (clientInstance as any).on("udapp", "newTransaction", async (transaction: RemixTxEvent, receipt: any) => {
                 setError(undefined)
                 log("A new transaction was sent", transaction)
                 resetContractGasCostMap()
@@ -100,7 +100,7 @@ export const HomeView: React.FC = () => {
                 const { hash } = transaction
                 log("Transaction hash", hash)
 
-                const isContractCreation = (transaction as any).contractAddress ? true : false
+                const isContractCreation = (receipt as any).contractAddress ? true : false
 
                 setStatusToLoading(hash)
 
@@ -111,7 +111,7 @@ export const HomeView: React.FC = () => {
                     })
 
                 try {
-                    const compilationResult: CompilationResult = await clientInstance.solidity.getCompilationResult()
+                    const compilationResult: any = await clientInstance.solidity.getCompilationResult()
                     const contracts = (compilationResult as any).data.contracts
                     const allFiles = Object.keys(contracts)
 
@@ -143,8 +143,7 @@ export const HomeView: React.FC = () => {
 
                                     log("gasPerLineCost on creation", creationGasProfiling)
 
-                                    updateContractAddressesMap(
-                                        (transaction as any).contractAddress,
+                                    updateContractAddressesMap((receipt as any).contractAddress,
                                         {
                                             bytecode: currentContractEVMData.bytecode.object,
                                             sourceMap: currentContractEVMData.bytecode.sourceMap,
