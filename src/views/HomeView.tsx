@@ -89,7 +89,6 @@ export const HomeView: React.FC = () => {
             clientInstance.on("fileManager", "currentFileChanged", (file) => {
                 setCurrentFileSelected(file)
             })
-
             ;(clientInstance as any).on(
                 "udapp",
                 "newTransaction",
