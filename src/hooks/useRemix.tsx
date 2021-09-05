@@ -48,7 +48,7 @@ export const RemixProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => 
                 setThemeType(theme.quality)
             })
             // enable debugger
-            // await client.call("manager" as any, "activatePlugin", "debugger");
+            await client.call("manager" as any, "activatePlugin", "debugger");
         }
 
         loadClient()
